@@ -8,7 +8,7 @@ const Quizzes = () => {
             <Flex alignItems="flex-start" justifyContent="center" flexWrap="wrap">
                 {quizzes.map(quiz => {
                     return (
-                        <Box bg="#3fc1c9" w="20rem" p={4} m={1} color="white">
+                        <Box textAlign="center" bg="#3fc1c9" w="20rem" p={4} m={1} color="white">
                             <Text fontSize="2xl">{quiz.name}</Text>
                             <Link to={`/play/${quiz.id}`}>
                                 <Button colorScheme="teal" size="lg">

@@ -48,10 +48,10 @@ const PlayArea = () => {
 
     return (
         <div>
-            <Heading>{state.quizToPlay?.name}</Heading>
-            <Text>Your Score: {state.score}</Text>
-            <Text fontSize="2xl">{quizToPlay?.questions[state.currentQuestionNumber].question}</Text>
-            <UnorderedList listStyleType="none">
+            <Heading textAlign="center">{quizToPlay?.name}</Heading>
+            <Text textAlign="center">Your Score: {state.score}</Text>
+            <Text textAlign="center" fontSize="2xl">{quizToPlay?.questions[state.currentQuestionNumber].question}</Text>
+            <UnorderedList textAlign="center" listStyleType="none">
                 {quizToPlay?.questions[state.currentQuestionNumber].options.map((option: Option) => {
                     return (
                         <ListItem margin={2}>

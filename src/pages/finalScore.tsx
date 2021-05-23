@@ -2,7 +2,7 @@ import { Text, Flex, Box, Button } from "@chakra-ui/react";
 import { useQuiz } from "../contexts/QuizContext";
 import { useParams, Link } from "react-router-dom";
 import { quizzes } from "../utils/data";
-import { Quiz, Option } from "../utils/types";
+import { Quiz } from "../utils/types";
 
 const FinalScore = () => {
     const { state, dispatch } = useQuiz()
@@ -10,13 +10,15 @@ const FinalScore = () => {
     const quizToPlay: Quiz | undefined = quizzes.find(quiz => quiz.id === quizId)
     return (
         <div>
-            <Link to="/">
-            <Button onClick={()=> dispatch({ type: "RESET_QUIZ" })} colorScheme="teal" size="lg" width="10rem" >
-                Play More
-            </Button>
-            </Link>
-            <Text fontSize="4xl">{quizToPlay?.name}</Text>
-            <Text fontSize="3xl">Your final score is {state.score}.</Text>
+            <Box textAlign="center">
+                <Link to="/">
+                    <Button onClick={() => dispatch({ type: "RESET_QUIZ" })} colorScheme="teal" size="lg" width="10rem" >
+                        Play More
+                    </Button>
+                </Link>
+            </Box>
+            <Text textAlign="center" fontSize="4xl">{quizToPlay?.name}</Text>
+            <Text textAlign="center" fontSize="3xl">Your final score is {state.score}.</Text>
             <Flex alignItems="flex-start" justifyContent="center" flexWrap="wrap">
                 {
                     quizToPlay?.questions.map(question => {
