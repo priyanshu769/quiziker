@@ -1,6 +1,6 @@
-import {Action} from "./types"
+import { Action, InitialState } from "./types"
 
-export const initialState = {
+export const initialState : InitialState = {
     score: 0,
     currentQuestionNumber: 0
 }

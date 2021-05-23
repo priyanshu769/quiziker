@@ -21,3 +21,13 @@ export type Action =
     | { type: "INCREMENT_SCORE"; payload: number }
     | { type: "DECREMENT_SCORE"; payload: number }
     | { type: "INCREMENT_QUESTION_NUMBER" };
+
+export type InitialState = {
+    score: number,
+    currentQuestionNumber: number
+}
+
+export type AppProvider = {
+    state: InitialState,
+    dispatch: (action: Action) => void
+}
