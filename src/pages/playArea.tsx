@@ -3,14 +3,13 @@ import { useQuiz } from "../contexts/QuizContext";
 import { Quiz, Option } from "../utils/types";
 import { initialState } from "../utils/quizReducer";
 import { useParams, Link } from "react-router-dom";
-import { quizzes } from "../utils/data";
 import { useState } from "react";
 
 const PlayArea = () => {
     const [buttonColor, setButtonColor] = useState<boolean>(false)
     const { state, dispatch } = useQuiz()
     const { quizId } = useParams()
-    const quizToPlay: Quiz | undefined = quizzes.find(quiz => quiz.id === quizId)
+    const quizToPlay: Quiz | undefined = state.quizzes?.find(quiz => quiz._id === quizId)
 
     const buttonColorChanger = (buttonColor: boolean, option: Option) => {
         if (!buttonColor) {
@@ -57,7 +56,7 @@ const PlayArea = () => {
                         <ListItem margin={2}>
                             {
                                 state.currentQuestionNumber + 1 === quizToPlay?.questions?.length ?
-                                    <Link to={`/final-score/${quizToPlay.id}`}>
+                                    <Link to={`/final-score/${quizToPlay._id}`}>
                                         <Button onClick={() => chosenOptionFunction(option, state, quizToPlay)} colorScheme={buttonColorChanger(buttonColor, option)} size="lg" width="20rem" >
                                             {option.answer}
                                         </Button>

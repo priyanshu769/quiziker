@@ -1,13 +1,12 @@
 import { Text, Flex, Box, Button } from "@chakra-ui/react";
 import { useQuiz } from "../contexts/QuizContext";
 import { useParams, Link } from "react-router-dom";
-import { quizzes } from "../utils/data";
 import { Quiz } from "../utils/types";
 
 const FinalScore = () => {
     const { state, dispatch } = useQuiz()
     const { quizId } = useParams()
-    const quizToPlay: Quiz | undefined = quizzes.find(quiz => quiz.id === quizId)
+    const quizToPlay: Quiz | undefined = state.quizzes?.find(quiz => quiz._id === quizId)
     return (
         <div>
             <Box textAlign="center">
@@ -28,8 +27,8 @@ const FinalScore = () => {
                                 {
                                     question.options.map(option => {
                                         return (
-                                            <Text>
-                                                {option.correct && option.answer}
+                                            <Text color="blue">
+                                                {option.correct && `Answer: ${option.answer}`}
                                             </Text>
                                         )
                                     })
