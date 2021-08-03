@@ -10,13 +10,14 @@ const Login = () => {
     const [email, setEmail] = useState<LoginSignup["email"]>(null)
     const [password, setPassword] = useState<LoginSignup["password"]>(null)
     const [loading, setLoading] = useState<Loading['loading']>(null)
-    const { dispatch } = useQuiz()
+    const { state, dispatch } = useQuiz()
     const navigate = useNavigate()
     const location: any = useLocation()
     const loginHandler = async () => {
         try {
             setLoading("Logging In...")
             const loggedIn = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/login', { email: email, password: password })
+            console.log(loggedIn)
             if (loggedIn.data.success) {
                 setLoading("Logged In")
                 dispatch({ type: "SET_LOGGED_IN_TOKEN", payload: loggedIn.data.token })
@@ -26,6 +27,8 @@ const Login = () => {
                     dispatch({ type: "RESET_QUIZ" })
                     return navigate('/')
                 } else navigate(location.state?.from)
+            } else if (loggedIn.data.message) {
+                setLoading(loggedIn.data.message)
             }
         } catch (error) {
             setLoading("Some error occured!")
@@ -34,15 +37,22 @@ const Login = () => {
     }
     return (
         <div>
-            <Box display="flex" justifyContent="center">
-                <Box bg="#3fc1c9" w="20rem" p={4} m={1} color="black" backgroundColor="white">
-                    {loading && <Text fontSize='2xl'>{loading}</Text>}
-                    <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" margin="0.5rem" />
-                    <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" margin="0.5rem" />
-                    <Button onClick={loginHandler} colorScheme="teal" size="md" margin="0.5rem">Login</Button>
-                    <Text fontSize='2xl'>Already a user, <Link to="/signup">Signup.</Link></Text>
+            <div style={{ display: state.loggedInToken ? "none" : "block" }}>
+                <Box display="flex" justifyContent="center">
+                    <Box w="20rem" p={4} m={1} color="black">
+                        {loading && <Text fontSize='2xl'>{loading}</Text>}
+                        <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" m="0.5rem" />
+                        <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" m="0.5rem" />
+                        <Button onClick={loginHandler} colorScheme="teal" size="md" m="0.5rem">Login</Button>
+                        <Text fontSize='2xl'>Not a user? <Link to="/signup"><Text color="#3490de">Signup</Text></Link></Text>
+                    </Box>
                 </Box>
-            </Box>
+            </div>
+            <div style={{ display: state.loggedInToken ? "block" : "none" }}>
+                <Box display="flex" justifyContent="center">
+                    <Text fontSize='2xl'>You are logged in, <Link to="/"><Text color="#3490de">Go Play</Text></Link></Text>
+                </Box>
+            </div>
         </div>
     )
 }

@@ -22,8 +22,8 @@ export type Action =
     | { type: "DECREMENT_SCORE"; payload: number }
     | { type: "INCREMENT_QUESTION_NUMBER" }
     | { type: "SET_QUIZZES"; payload: Quiz[] }
-    | { type: "SET_LOGGED_IN_TOKEN"; payload: string }
-    | { type: "SET_LOGGED_IN_USER"; payload: User };
+    | { type: "SET_LOGGED_IN_TOKEN"; payload: string | null }
+    | { type: "SET_LOGGED_IN_USER"; payload: User | null };
 
 export type User = {
     _id: string;
@@ -53,7 +53,7 @@ export type LoginSignupServerResponse = {
     success: boolean;
     token: string;
     restUserData: User;
-    mesage: string | undefined;
+    message: string | undefined;
     errorMessage: string | undefined;
 }
 

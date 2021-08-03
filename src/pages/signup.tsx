@@ -10,7 +10,7 @@ const Signup = () => {
     const [email, setEmail] = useState<LoginSignup["email"]>(null)
     const [password, setPassword] = useState<LoginSignup["password"]>(null)
     const [loading, setLoading] = useState<Loading['loading']>(null)
-    const { dispatch } = useQuiz()
+    const { state, dispatch } = useQuiz()
     const navigate = useNavigate()
     const signupHandler = async () => {
         try {
@@ -30,16 +30,23 @@ const Signup = () => {
     }
     return (
         <div>
-            <Box display="flex" justifyContent="center">
-                {loading && <Text>{loading}</Text>}
-                <Box textAlign="center" bg="#3fc1c9" w="20rem" p={4} m={1} color="black">
-                    <Input onChange={(e) => setName(e.target.value)} type="text" placeholder="Name" size="md" />
-                    <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" />
-                    <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" />
-                    <Button onClick={signupHandler} colorScheme="teal" size="md">Signup</Button>
-                    <Text fontSize='2xl'>Already a user, <Link to="/login">Signup.</Link></Text>
+            <div style={{ display: state.loggedInToken ? "none" : "block" }}>
+                <Box display="flex" justifyContent="center">
+                    {loading && <Text>{loading}</Text>}
+                    <Box w="20rem" p={4} m={1} color="black">
+                        <Input onChange={(e) => setName(e.target.value)} type="text" placeholder="Name" size="md" m="0.5rem" />
+                        <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" m="0.5rem" />
+                        <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" m="0.5rem" />
+                        <Button onClick={signupHandler} colorScheme="teal" size="md" m="0.5rem">Signup</Button>
+                        <Text fontSize='2xl'>Already a user? <Link to="/login"><Text color="#3490de">Login</Text></Link></Text>
+                    </Box>
                 </Box>
-            </Box>
+            </div>
+            <div style={{ display: state.loggedInToken ? "block" : "none" }}>
+                <Box display="flex" justifyContent="center">
+                    <Text fontSize='2xl'>You are logged in, <Link to="/"><Text color="#3490de">Go Play</Text></Link></Text>
+                </Box>
+            </div>
         </div>
     )
 }
