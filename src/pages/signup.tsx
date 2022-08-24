@@ -6,9 +6,9 @@ import { useQuiz } from "../contexts/QuizContext";
 import { LoginSignup, LoginSignupServerResponse, Loading } from "../utils/types";
 
 const Signup = () => {
-    const [name, setName] = useState<LoginSignup["name"]>(null)
-    const [email, setEmail] = useState<LoginSignup["email"]>(null)
-    const [password, setPassword] = useState<LoginSignup["password"]>(null)
+    const [name, setName] = useState<LoginSignup["name"]>('')
+    const [email, setEmail] = useState<LoginSignup["email"]>('')
+    const [password, setPassword] = useState<LoginSignup["password"]>('')
     const [loading, setLoading] = useState<Loading['loading']>(null)
     const { state, dispatch } = useQuiz()
     const navigate = useNavigate()

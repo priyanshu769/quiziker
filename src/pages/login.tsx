@@ -7,8 +7,8 @@ import { useQuiz } from "../contexts/QuizContext";
 import { LoginSignup, LoginSignupServerResponse, Loading } from "../utils/types"
 
 const Login = () => {
-    const [email, setEmail] = useState<LoginSignup["email"]>(null)
-    const [password, setPassword] = useState<LoginSignup["password"]>(null)
+    const [email, setEmail] = useState<LoginSignup["email"]>('')
+    const [password, setPassword] = useState<LoginSignup["password"]>('')
     const [loading, setLoading] = useState<Loading['loading']>(null)
     const { state, dispatch } = useQuiz()
     const navigate = useNavigate()
@@ -35,15 +35,20 @@ const Login = () => {
             console.log(error)
         }
     }
+    const fillGuestCredentials = () => {
+        setEmail('prynsu@yahoo.com')
+        setPassword('priyanshu')
+    }
     return (
         <div>
             <div style={{ display: state.loggedInToken ? "none" : "block" }}>
                 <Box display="flex" justifyContent="center">
                     <Box w="20rem" p={4} m={1} color="black">
                         {loading && <Text fontSize='2xl'>{loading}</Text>}
-                        <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" m="0.5rem" />
-                        <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" m="0.5rem" />
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" m="0.5rem" />
+                        <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" m="0.5rem" />
                         <Button onClick={loginHandler} colorScheme="teal" size="md" m="0.5rem">Login</Button>
+                        <Button onClick={fillGuestCredentials} colorScheme="teal" size="md" m="0.5rem">Fill Guest Credentials</Button>
                         <Text fontSize='2xl'>Not a user? <Link to="/signup"><Text color="#3490de">Signup</Text></Link></Text>
                     </Box>
                 </Box>

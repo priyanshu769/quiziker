@@ -73,9 +73,9 @@ export type ResultsServerResponse = {
 }
 
 export type LoginSignup = {
-    name: null | string,
-    email: null | string,
-    password: null | string,
+    name: string,
+    email: string,
+    password: string,
 }
 
 export type Loading = {
