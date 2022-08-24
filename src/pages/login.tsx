@@ -13,26 +13,36 @@ const Login = () => {
     const { state, dispatch } = useQuiz()
     const navigate = useNavigate()
     const location: any = useLocation()
+    const checkCredentials = (email: String) => {
+        if (email.includes('@') && !email.includes(' ')) {
+        } else {
+            setLoading('Enter a Valid email.')
+            return false
+        }
+    }
     const loginHandler = async () => {
-        try {
-            setLoading("Logging In...")
-            const loggedIn = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/login', { email: email, password: password })
-            console.log(loggedIn)
-            if (loggedIn.data.success) {
-                setLoading("Logged In")
-                dispatch({ type: "SET_LOGGED_IN_TOKEN", payload: loggedIn.data.token })
-                dispatch({ type: "SET_LOGGED_IN_USER", payload: loggedIn.data.restUserData })
-                localStorage.setItem("loggedInUser", JSON.stringify({ loggedInToken: loggedIn.data.token, user: loggedIn.data.restUserData }))
-                if (!location.state) {
-                    dispatch({ type: "RESET_QUIZ" })
-                    return navigate('/')
-                } else navigate(location.state?.from)
-            } else if (loggedIn.data.message) {
-                setLoading(loggedIn.data.message)
+        const emailChecked = checkCredentials(email)
+        if (emailChecked) {
+            try {
+                setLoading("Logging In...")
+                const loggedIn = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/login', { email: email, password: password })
+                console.log(loggedIn)
+                if (loggedIn.data.success) {
+                    setLoading("Logged In")
+                    dispatch({ type: "SET_LOGGED_IN_TOKEN", payload: loggedIn.data.token })
+                    dispatch({ type: "SET_LOGGED_IN_USER", payload: loggedIn.data.restUserData })
+                    localStorage.setItem("loggedInUser", JSON.stringify({ loggedInToken: loggedIn.data.token, user: loggedIn.data.restUserData }))
+                    if (!location.state) {
+                        dispatch({ type: "RESET_QUIZ" })
+                        return navigate('/')
+                    } else navigate(location.state?.from)
+                } else if (loggedIn.data.message) {
+                    setLoading(loggedIn.data.message)
+                }
+            } catch (error) {
+                setLoading("Some error occured!")
+                console.log(error)
             }
-        } catch (error) {
-            setLoading("Some error occured!")
-            console.log(error)
         }
     }
     const fillGuestCredentials = () => {

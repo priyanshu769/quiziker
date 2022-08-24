@@ -12,31 +12,52 @@ const Signup = () => {
     const [loading, setLoading] = useState<Loading['loading']>(null)
     const { state, dispatch } = useQuiz()
     const navigate = useNavigate()
-    const signupHandler = async () => {
-        try {
-            setLoading("Creating Your Account...")
-            const signedUp = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/signup', { name: name, email: email, password: password })
-            if (signedUp.data.success) {
-                setLoading("Signed Up")
-                dispatch({ type: "SET_LOGGED_IN_TOKEN", payload: signedUp.data.token })
-                dispatch({ type: "SET_LOGGED_IN_USER", payload: signedUp.data.restUserData })
-                localStorage.setItem("loggedInUser", JSON.stringify({ loggedInToken: signedUp.data.token, user: signedUp.data.restUserData }))
-                navigate('/')
+    const checkCredentials = (name: String, email: String, password: String) => {
+        if (name.length > 3) {
+            if (email.includes('@') && !email.includes(' ')) {
+                if (password.length > 5) {
+                    return true
+                } else {
+                    setLoading('Password must 6 characters or long.')
+                    return false
+                }
+            } else {
+                setLoading('Enter a Valid email.')
+                return false
             }
-        } catch (error) {
-            setLoading("Some error occured!")
-            console.log(error)
+        } else {
+            setLoading('Name must be greater than two characters.')
+            return false
+        }
+    }
+    const signupHandler = async () => {
+        const credentialsChecked = checkCredentials(name, email, password)
+        if (credentialsChecked) {
+            try {
+                setLoading("Creating Your Account...")
+                const signedUp = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/signup', { name: name, email: email, password: password })
+                if (signedUp.data.success) {
+                    setLoading("Signed Up")
+                    dispatch({ type: "SET_LOGGED_IN_TOKEN", payload: signedUp.data.token })
+                    dispatch({ type: "SET_LOGGED_IN_USER", payload: signedUp.data.restUserData })
+                    localStorage.setItem("loggedInUser", JSON.stringify({ loggedInToken: signedUp.data.token, user: signedUp.data.restUserData }))
+                    navigate('/')
+                }
+            } catch (error) {
+                setLoading("Some error occured!")
+                console.log(error)
+            }
         }
     }
     return (
         <div>
             <div style={{ display: state.loggedInToken ? "none" : "block" }}>
                 <Box display="flex" justifyContent="center">
-                    {loading && <Text>{loading}</Text>}
                     <Box w="20rem" p={4} m={1} color="black">
-                        <Input onChange={(e) => setName(e.target.value)} type="text" placeholder="Name" size="md" m="0.5rem" />
-                        <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" m="0.5rem" />
-                        <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" m="0.5rem" />
+                        {loading && <Text>{loading}</Text>}
+                        <Input value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Name" size="md" m="0.5rem" />
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" size="md" m="0.5rem" />
+                        <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" size="md" m="0.5rem" />
                         <Button onClick={signupHandler} colorScheme="teal" size="md" m="0.5rem">Signup</Button>
                         <Text fontSize='2xl'>Already a user? <Link to="/login"><Text color="#3490de">Login</Text></Link></Text>
                     </Box>
