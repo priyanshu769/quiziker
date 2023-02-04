@@ -19,12 +19,12 @@ function App() {
   const navigate = useNavigate()
   const { state, dispatch } = useQuiz();
   const [loading, setLoading] = useState<Loading['loading']>(null)
-  console.log(state)
+  
   useEffect(() => {
     (async () => {
       setLoading("Loading Quizzes")
       try {
-        const response = await axios.get<QuizServerResponse>("https://quiziker-api.herokuapp.com/quizzes")
+        const response = await axios.get<QuizServerResponse>("https://quiziker-api.cyclic.app/quizzes")
         if (response.data.success) {
           dispatch({ type: "SET_QUIZZES", payload: response.data.quizzes })
           setLoading(null)

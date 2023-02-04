@@ -35,7 +35,7 @@ const Signup = () => {
         if (credentialsChecked) {
             try {
                 setLoading("Creating Your Account...")
-                const signedUp = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/signup', { name: name, email: email, password: password })
+                const signedUp = await axios.post<LoginSignupServerResponse>('https://quiziker-api.cyclic.app/signup', { name: name, email: email, password: password })
                 if (signedUp.data.success) {
                     setLoading("Signed Up")
                     dispatch({ type: "SET_LOGGED_IN_TOKEN", payload: signedUp.data.token })

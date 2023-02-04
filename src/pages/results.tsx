@@ -14,7 +14,7 @@ export const Results = () => {
         (async () => {
             setLoading("Loading...")
             try {
-                const results = await axios.get<ResultsServerResponse>('https://quiziker-api.herokuapp.com/results', { headers: { Authorization: state.loggedInToken } })
+                const results = await axios.get<ResultsServerResponse>('https://quiziker-api.cyclic.app/results', { headers: { Authorization: state.loggedInToken } })
                 if (results.data.success) {
                     setResults(results.data.results)
                     setLoading(null)

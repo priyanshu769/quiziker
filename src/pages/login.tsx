@@ -15,6 +15,7 @@ const Login = () => {
     const location: any = useLocation()
     const checkCredentials = (email: String) => {
         if (email.includes('@') && !email.includes(' ')) {
+            return true
         } else {
             setLoading('Enter a Valid email.')
             return false
@@ -25,7 +26,7 @@ const Login = () => {
         if (emailChecked) {
             try {
                 setLoading("Logging In...")
-                const loggedIn = await axios.post<LoginSignupServerResponse>('https://quiziker-api.herokuapp.com/login', { email: email, password: password })
+                const loggedIn = await axios.post<LoginSignupServerResponse>('https://quiziker-api.cyclic.app/login', { email: email, password: password })
                 console.log(loggedIn)
                 if (loggedIn.data.success) {
                     setLoading("Logged In")

@@ -18,7 +18,7 @@ const FinalScore = () => {
         } else {
             setLoading("Saving Result...")
             try {
-                const resultPosted = await axios.post<ResultsServerResponse>('https://quiziker-api.herokuapp.com/results', { quizName: quizToPlay?.name, finalScore: state.score, usersName: state?.user?.name }, { headers: { Authorization: state.loggedInToken } })
+                const resultPosted = await axios.post<ResultsServerResponse>('https://quiziker-api.cyclic.app/results', { quizName: quizToPlay?.name, finalScore: state.score, usersName: state?.user?.name }, { headers: { Authorization: state.loggedInToken } })
                 if (resultPosted.data.success) {
                     setLoading("Result Saved!")
                 }
